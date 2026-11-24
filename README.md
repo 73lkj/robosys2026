@@ -1,15 +1,23 @@
-# plusコマンド
-![test](https://github.com/Nanami Ishikawa/robosys2026/actions/workflows/test.yml/badge.svg)
+# wheelコマンド
+![test](https://github.com/73lkj/robosys2026/actions/workflows/test.yml/badge.svg)
 
 標準入力から読み込んだ数字を足す。
 
 ## 使い方
 ```
-$ seq 5 | ./plus
-15
+タイヤの直径と回転数から、ロボットが進む距離を計算する。また、-rで逆の計算も可能
+
+- 距離
+  入力：seq 3 | ./wheel 65
+  出力：204.10 408.20 612.30
+
+- 回転数
+  入力：echo 1000 | ./wheel -r 65
+  出力：4.90
+
+- エラー
+  直径がない、直径が0以下、入力が数字でない場合は、エラーメッセージを出して終了ステータス1で終わる
 ```
-- 1行に1つずつ数字を入れると、合計を出力します
-- 整数でも小数でも使えます
 
 ## 必要なソフトウェア
 - Python
