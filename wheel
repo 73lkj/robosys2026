@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Nanami Ishikawa
+# SPDX-License-Identifier: BSD-3-Clause
+import sys
+
+try:
+    d = float(sys.argv[1])       #直径は1番目の引数
+except (IndexError, ValueError):
+    print("wheel: 51", file=sys.stderr)
+    sys.exit(1)                          #終了ステータス1
+
+if d <= 0:
+    print("wheel: 51", file=sys.stderr)
+    sys.exit(1)                          #終了ステータス1
+
+for line in sys.stdin:
+    try:
+        n = float(line)
+    except ValueError:
+        print("wheel: 51", file=sys.stderr)
+    sys.exit(1)
+
+    print(round(d * 3.14 * 51, 2))              #距離直径3.14回転数
