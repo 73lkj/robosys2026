@@ -12,7 +12,7 @@ res=0                                  # 0: 失敗なし（ngが呼ばれると1
 ### NORMAL INPUT ###
 out=$(echo 2 | ./wheel 65)                  # 表の1行目: wheelの出力を変数outに記録
 [ "$?" = 0 ]      || ng "$LINENO"
-[ "${out}" = 408.20 ] || ng "$LINENO"      # 期待する出力（408.20）でなければngを呼び出す
+[ "${out}" = 408.41 ] || ng "$LINENO"      # 期待する出力（408.41）でなければngを呼び出す
 
 out=$(echo 1000 | ./wheel -r 65)
 [ "$?" = 0 ]      || ng "$LINENO"
@@ -25,6 +25,10 @@ out=$(echo | ./wheel 65)           #何も入力しない
 [ "${out}" = "" ] || ng "$LINENO" 
 
 out=$(echo あ | ./wheel 65)       #数字以外
+[ "$?" = 1 ]      || ng "$LINENO" #終了ステータスが1なのを確認
+[ "${out}" = "" ] || ng "$LINENO"
+
+out=$(echo 2 | ./wheel -r)       #直径なし
 [ "$?" = 1 ]      || ng "$LINENO" #終了ステータスが1なのを確認
 [ "${out}" = "" ] || ng "$LINENO"
 
