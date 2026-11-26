@@ -47,4 +47,12 @@ for line in sys.stdin:                   #1つずつ読む
         right_radius = radius + w / 2                #ロボットの中心から右タイヤまでの距離
 
         left_distance = 2 * math.pi * left_radius    #左距離
-        left_distance = 2 * math.pi * left_radius    #右距離
+        right_distance = 2 * math.pi * left_radius    #右距離
+
+        left_rotations = left_distance / (d * math.pi) #左回転数
+        right_rotations = left_distance / (d * math.pi) #右回転数
+
+        print(
+        f"{left_distance:.2f} {right_distance:.2f} "
+        f"{left_rotations:.2f} {right_rotations:.2f}"
+        )
