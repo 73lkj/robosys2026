@@ -18,6 +18,10 @@ out=$(echo 1000 | ./wheel -r 65)
 [ "$?" = 0 ]      || ng "$LINENO"
 [ "${out}" = 4.90 ] || ng "$LINENO"      # 期待する出力（4.90）でなければngを呼び出す
 
+out=$(echo 500 | ./wheel -c 65 150 )      #正常
+[ "$?" = 0 ] || ng "$LINENO"
+[ "${out}" = "2670.35 3612.83 13.08 17.69" ] || ng "$LINENO"
+
 
 ### STRANGE INPUT ###
 out=$(echo | ./wheel 65)           #何も入力しない
@@ -36,9 +40,22 @@ out=$(echo 1 | ./wheel)           #引数なし
 [ "$?" = 1 ]      || ng "$LINENO" #これも異常終了する
 [ "${out}" = "" ] || ng "$LINENO"
 
-out=$(echo 1 | ./wheel 0)         # 直径が0   
+out=$(echo 1 | ./wheel 0)         #直径が0   
 [ "$?" = 1 ]      || ng "$LINENO" #これも異常終了する
 [ "${out}" = "" ] || ng "$LINENO"
+
+out=$(echo 500 | ./wheel -c 65 )         # トレッド幅なし
+[ "$?" = 1 ]      || ng "$LINENO"
+[ "${out}" = "" ] || ng "$LINENO"
+
+out=$(echo 500 | ./wheel -c 65 0 )         # トレッド幅0
+[ "$?" = 1 ]      || ng "$LINENO"
+[ "${out}" = "" ] || ng "$LINENO"
+
+out=$(echo 500 | ./wheel -c 0 150 )         # 直径0
+[ "$?" = 1 ]      || ng "$LINENO"
+[ "${out}" = "" ] || ng "$LINENO"
+
 
 [ "${res}" = 0 ] && echo OK            # 通ったのが（人間に）分かるように表示
 exit $res                              # 終了ステータスを返して終了（機械向け）

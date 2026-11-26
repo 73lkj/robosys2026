@@ -16,17 +16,18 @@ try:
         d = float(sys.argv[1])
 
 
-
 except (IndexError, ValueError):
-    print("wheel: 直径を正の数で指定して下さい", file=sys.stderr)
+    print("wheel: 使い方: wheel 直径 / wheel -r 直径 / wheel -c 直径 トレッド幅(左右のタイヤの距離)", file=sys.stderr)
     sys.exit(1)                          #終了ステータス1
+
 
 if d <= 0:                               #直径が0以下ならエラー
     print("wheel: 直径を正の数で指定して下さい", file=sys.stderr)
     sys.exit(1)                          #終了ステータス1
 
-if w <= 0:                               #左右のタイヤの距離が0以下ならエラー
-    print("wheel: 左右のタイヤの距離を正の数で指定して下さい", file=sys.stderr)
+
+if mode == 2 and w <= 0:                 #円を描くモードかつ左右のタイヤの距離が0以下ならエラー
+    print("wheel: トレッド幅(左右のタイヤの距離)を正の数で指定して下さい", file=sys.stderr)
     sys.exit(1)                          #終了ステータス1
 
 for line in sys.stdin:                   #1つずつ読む
@@ -43,14 +44,14 @@ for line in sys.stdin:                   #1つずつ読む
         print(f"{n / (d * math.pi):.2f}")            #回転計算
     else:
         radius = n                                   #半径
-        left_radius = radius - w / 2                 #ロボットの中心から左タイヤまでの距離
-        right_radius = radius + w / 2                #ロボットの中心から右タイヤまでの距離
+        left_radius = radius - w / 2                 #円の中心から左タイヤまでの距離
+        right_radius = radius + w / 2                #円の中心から右タイヤまでの距離
 
         left_distance = 2 * math.pi * left_radius    #左距離
-        right_distance = 2 * math.pi * left_radius    #右距離
+        right_distance = 2 * math.pi * right_radius    #右距離
 
         left_rotations = left_distance / (d * math.pi) #左回転数
-        right_rotations = left_distance / (d * math.pi) #右回転数
+        right_rotations = right_distance / (d * math.pi) #右回転数
 
         print(
         f"{left_distance:.2f} {right_distance:.2f} "
