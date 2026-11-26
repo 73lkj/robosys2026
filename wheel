@@ -7,15 +7,26 @@ try:
     if sys.argv[1] == "-r":          #回転モード
         mode = 1
         d = float(sys.argv[2])       #直径受け取る
+    elif sys.argv[1] == "-c":
+        mode = 2
+        d = float(sys.argv[2])
+        w = float(sys.argv[3])       #左右のタイヤの距離
     else:
         mode = 0
         d = float(sys.argv[1])
+
+
+
 except (IndexError, ValueError):
     print("wheel: 直径を正の数で指定して下さい", file=sys.stderr)
     sys.exit(1)                          #終了ステータス1
 
 if d <= 0:                               #直径が0以下ならエラー
     print("wheel: 直径を正の数で指定して下さい", file=sys.stderr)
+    sys.exit(1)                          #終了ステータス1
+
+if w <= 0:                               #左右のタイヤの距離が0以下ならエラー
+    print("wheel: 左右のタイヤの距離を正の数で指定して下さい", file=sys.stderr)
     sys.exit(1)                          #終了ステータス1
 
 for line in sys.stdin:                   #1つずつ読む
@@ -28,5 +39,12 @@ for line in sys.stdin:                   #1つずつ読む
 
     if mode == 0:
         print(f"{d * math.pi * n:.2f}")              #距離計算
-    else:
+    elif mode == 1:
         print(f"{n / (d * math.pi):.2f}")            #回転計算
+    else:
+        radius = n                                   #半径
+        left_radius = radius - w / 2                 #ロボットの中心から左タイヤまでの距離
+        right_radius = radius + w / 2                #ロボットの中心から右タイヤまでの距離
+
+        left_distance = 2 * math.pi * left_radius    #左距離
+        left_distance = 2 * math.pi * left_radius    #右距離
