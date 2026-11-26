@@ -4,54 +4,57 @@
 import sys, math
 
 try:
-    if sys.argv[1] == "-r":          #回転モード
+    if sys.argv[1] == "-r":          # 回転モード
         mode = 1
-        d = float(sys.argv[2])       #直径受け取る
-    elif sys.argv[1] == "-c":        #円を描くモード
+        d = float(sys.argv[2])       # 直径受け取る
+    elif sys.argv[1] == "-c":        # 円を描くモード
         mode = 2
         d = float(sys.argv[2])
-        w = float(sys.argv[3])       #左右のタイヤの距離
+        w = float(sys.argv[3])       # 左右のタイヤの距離
     else:
         mode = 0
         d = float(sys.argv[1])
 
 except (IndexError, ValueError):
     print("wheel: 使い方: wheel 直径 / wheel -r 直径 / wheel -c 直径 トレッド幅(左右のタイヤの距離)", file=sys.stderr)
-    sys.exit(1)                          #終了ステータス1
+    sys.exit(1)                          # 終了ステータス1
 
-if d <= 0 or not math.isfinite(x):       #直径が普通の数でない又は0以下ならエラー
+if d <= 0 or not math.isfinite(d):       #直径が普通の数でない又は0以下ならエラー
     print("wheel: 直径を正の数で指定して下さい", file=sys.stderr)
-    sys.exit(1)                          #終了ステータス1
+    sys.exit(1)                          # 終了ステータス1
 
-if (mode == 2 and w <= 0) or not math.isfinite(x) :                 #円を描くモードかつ左右のタイヤの距離が0以下ならエラー
+if mode == 2 and (w <= 0 or not math.isfinite(w)):                 #円を描くモードかつ左右のタイヤの距離が0以下ならエラー
     print("wheel: トレッド幅(左右のタイヤの距離)を正の数で指定して下さい", file=sys.stderr)
-    sys.exit(1)                          #終了ステータス1
+    sys.exit(1)                          # 終了ステータス1
 
-for line in sys.stdin:                   #1つずつ読む
+for line in sys.stdin:                   # 1つずつ読む
     try:
         n = float(line)
     except ValueError:
         print("wheel: 数字を入力して下さい", file=sys.stderr)
         sys.exit(1)
+    if not math.isfinite(n):
+        print("wheel: 数字を入力して下さい", file=sys.stderr)
+        sys.exit(1) 
 
     if mode == 0:
-        print(f"{d * math.pi * n:.2f}")              #距離計算
+        print(f"{d * math.pi * n:.2f}")              # 距離計算
     elif mode == 1:
-        print(f"{n / (d * math.pi):.2f}")            #回転計算
+        print(f"{n / (d * math.pi):.2f}")            # 回転計算
     else:
-        radius = n                                   #半径
+        radius = n                                   # 半径
         if radius < 0:
-            print("wheel: 半径を0以上の数で指定して下さい",file=sys.stderr)
+            print("wheel: 半径を0以上の数で指定して下さい", file=sys.stderr)
             sys.exit(1)
 
-        left_radius = radius - w / 2                 #円の中心から左タイヤまでの距離
-        right_radius = radius + w / 2                #円の中心から右タイヤまでの距離
+        left_radius = radius - w / 2                 # 円の中心から左タイヤまでの距離
+        right_radius = radius + w / 2                # 円の中心から右タイヤまでの距離
 
-        left_distance = 2 * math.pi * left_radius    #左距離
-        right_distance = 2 * math.pi * right_radius    #右距離
+        left_distance = 2 * math.pi * left_radius     # 左距離
+        right_distance = 2 * math.pi * right_radius   # 右距離
 
-        left_rotations = left_distance / (d * math.pi) #左回転数
-        right_rotations = right_distance / (d * math.pi) #右回転数
+        left_rotations = left_distance / (d * math.pi)   # 左回転数
+        right_rotations = right_distance / (d * math.pi) # 右回転数
 
         print(
         f"{left_distance:.2f} {right_distance:.2f} "
